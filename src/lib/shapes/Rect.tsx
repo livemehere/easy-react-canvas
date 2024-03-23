@@ -1,7 +1,8 @@
 import { FC, ReactNode } from "react";
-import { DrawAbleDefaultProps, TDraw } from "../types";
+import { drawBounds } from "../utils/bounds";
+import { TBaseShapeProps, TDraw } from "../types/shape";
 
-interface RectProps {
+export interface RectProps extends TBaseShapeProps<RectProps> {
   x: number;
   y: number;
   width: number;
@@ -17,8 +18,18 @@ const Rect: FC<RectProps> = () => {
 };
 
 const draw: TDraw<RectProps> = (ctx, props) => {
-  const { x, y, width, height, stroke, fill, strokeWidth } = props;
-  const { bounds } = props;
+  const {
+    x,
+    y,
+    width,
+    height,
+    stroke,
+    fill,
+    strokeWidth,
+    bounds,
+    displayBounds,
+  } = props;
+
   if (!bounds) {
     throw new Error(
       "Bounds is required, please check render loop in <Canvas/>",
@@ -27,6 +38,15 @@ const draw: TDraw<RectProps> = (ctx, props) => {
   /* Position origin to parent */
   const relativeX = x + bounds.x;
   const relativeY = y + bounds.y;
+
+  if (displayBounds) {
+    drawBounds(ctx, {
+      x: relativeX,
+      y: relativeY,
+      width,
+      height,
+    });
+  }
 
   ctx.save();
   ctx.beginPath();
@@ -39,13 +59,10 @@ const draw: TDraw<RectProps> = (ctx, props) => {
   ctx.restore();
 };
 
-const defaultProps: DrawAbleDefaultProps<RectProps> = {
+Rect.defaultProps = {
   drawable: true,
   type: "Rect",
   draw,
 };
-
-// @ts-ignore
-Rect.defaultProps = defaultProps;
 
 export default Rect;

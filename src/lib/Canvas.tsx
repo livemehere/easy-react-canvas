@@ -9,18 +9,21 @@ import React, {
   useState,
 } from "react";
 import useResizeObserver from "./hooks/useResizeObserver";
-import { DrawAbleProps, TRootDraw } from "./types";
+import { Bounds, getBounds } from "./utils/bounds";
+import { TFinalShapeProps, TRootDraw, TBaseShapeProps } from "./types/shape";
 
 interface Props {
   children?: ReactNode;
   resizeToWindow?: boolean;
   backgroundColor?: string;
+  displayBounds?: boolean;
 }
 
 const Canvas: FC<Props & HTMLAttributes<HTMLCanvasElement>> = ({
   children,
   resizeToWindow = false,
   backgroundColor,
+  displayBounds = false,
   ...props
 }) => {
   const rafRef = useRef<number | null>(null);
@@ -98,7 +101,14 @@ const Canvas: FC<Props & HTMLAttributes<HTMLCanvasElement>> = ({
     };
   }, [resizeToWindow]);
 
-  /** Pure function */
+  /* Pure function */
+  const toDrawAbleComponentArray = (children: ReactNode) => {
+    return Children.toArray(children).filter(
+      (child) => React.isValidElement(child) && child?.props.drawable,
+    ) as ReactElement<TBaseShapeProps>[];
+  };
+
+  /* Pure function */
   const setCanvasSize = (
     canvas: HTMLCanvasElement,
     width: number,
@@ -121,10 +131,10 @@ const Canvas: FC<Props & HTMLAttributes<HTMLCanvasElement>> = ({
     });
   };
 
-  /** Pure function */
+  /* Pure function */
   const rootDraw: TRootDraw = (ctx, props) => {
     console.log("DEBUG :: root draw");
-    const { bounds, backgroundColor } = props;
+    const { bounds, backgroundColor, components } = props;
     /* clear */
     if (backgroundColor) {
       ctx.fillStyle = backgroundColor;
@@ -132,51 +142,46 @@ const Canvas: FC<Props & HTMLAttributes<HTMLCanvasElement>> = ({
     } else {
       ctx.clearRect(bounds.x, bounds.y, bounds.width, bounds.height);
     }
-    traverseShape(ctx, toDrawAbleComponentArray(children), {
+    /** (DRAW_SPEC) 👇 If Draw spec changed, append options */
+    traverseShape(ctx, components, {
       rootBounds: bounds,
+      displayBounds,
     });
   };
 
-  /** Pure function */
-  const toDrawAbleComponentArray = (children: ReactNode) => {
-    return Children.toArray(children).filter(
-      (child) => React.isValidElement(child) && child?.props.drawable,
-    ) as ReactElement<DrawAbleProps>[];
-  };
-
-  /** Pure function */
+  /* Pure function */
   const traverseShape = (
     ctx: CanvasRenderingContext2D,
-    children: ReactElement<DrawAbleProps>[],
+    children: ReactElement<TBaseShapeProps>[],
     options: {
-      parent?: ReactElement<DrawAbleProps>;
-      rootBounds: { x: number; y: number; width: number; height: number };
+      parent?: ReactElement<TFinalShapeProps<TBaseShapeProps>>;
+      rootBounds: Bounds;
+      displayBounds: boolean;
     },
   ) => {
     children.forEach((child) => {
-      const { parent } = options;
-      const bounds = parent
-        ? {
-            x: parent.props.x + options.rootBounds.x,
-            y: parent.props.y + options.rootBounds.y,
-            width: parent.props.width,
-            height: parent.props.height,
-          }
-        : options.rootBounds;
+      const { parent, displayBounds } = options;
 
-      const me = React.cloneElement<DrawAbleProps>(child, {
+      const bounds = parent ? getBounds(parent) : options.rootBounds;
+
+      // @ts-ignore
+      const me = React.cloneElement<TFinalShapeProps<TBaseShapeProps>>(child, {
         ...child.props,
         bounds,
+        displayBounds,
       });
 
       /* Draw */
-      child.props.draw(ctx, me.props);
+      me.props.draw(ctx, me.props);
 
+      const meChildren = me.props.children;
       /* Draw children over parent */
-      if (me.props.children) {
-        traverseShape(ctx, toDrawAbleComponentArray(me.props.children), {
+      if (meChildren) {
+        /** (DRAW_SPEC) 👇 If Draw spec changed, append options */
+        traverseShape(ctx, toDrawAbleComponentArray(meChildren), {
           parent: me,
           rootBounds: bounds,
+          displayBounds,
         });
       }
     });

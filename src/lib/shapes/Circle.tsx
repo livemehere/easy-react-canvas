@@ -1,7 +1,8 @@
 import { FC, ReactNode } from "react";
-import { DrawAbleDefaultProps, TDraw } from "../types";
+import { drawBounds } from "../utils/bounds";
+import { TBaseShapeProps, TDraw } from "../types/shape";
 
-interface CircleProps {
+export interface CircleProps extends TBaseShapeProps<CircleProps> {
   x: number;
   y: number;
   radius: number;
@@ -16,7 +17,7 @@ const Circle: FC<CircleProps> = () => {
 };
 
 const draw: TDraw<CircleProps> = (ctx, props) => {
-  const { x, y, radius, stroke, fill, strokeWidth } = props;
+  const { x, y, radius, stroke, fill, strokeWidth, displayBounds } = props;
   const { bounds } = props;
   if (!bounds) {
     throw new Error(
@@ -26,6 +27,15 @@ const draw: TDraw<CircleProps> = (ctx, props) => {
   /* Position origin to parent */
   const relativeX = x + bounds.x;
   const relativeY = y + bounds.y;
+
+  if (displayBounds) {
+    drawBounds(ctx, {
+      x: relativeX - radius,
+      y: relativeY - radius,
+      width: radius * 2,
+      height: radius * 2,
+    });
+  }
 
   ctx.save();
   ctx.beginPath();
@@ -38,13 +48,10 @@ const draw: TDraw<CircleProps> = (ctx, props) => {
   ctx.restore();
 };
 
-const defaultProps: DrawAbleDefaultProps<CircleProps> = {
+Circle.defaultProps = {
   drawable: true,
   type: "Circle",
   draw,
 };
-
-// @ts-ignore
-Circle.defaultProps = defaultProps;
 
 export default Circle;
