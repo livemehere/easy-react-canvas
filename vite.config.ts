@@ -7,6 +7,9 @@ export default defineConfig({
     react(),
     dts({
       include: "src/lib/**/*",
+      rollupTypes: true,
+      insertTypesEntry: true,
+      copyDtsFiles: true,
     }),
   ],
   build: {
