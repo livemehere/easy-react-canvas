@@ -6,6 +6,7 @@ export type TBaseShapeProps<S = any> = {
   type: TShape;
   drawable: boolean;
   draw: TDraw<S>;
+  getBounds: (props: S) => Bounds;
 };
 
 /** (DRAW_SPEC) 👇 Type injected by <Canvas/> */

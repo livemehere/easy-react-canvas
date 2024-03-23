@@ -58,10 +58,26 @@ const draw: TDraw<RectProps> = (ctx, props) => {
   ctx.fill();
   ctx.restore();
 };
+
+const getBounds = (props: RectProps) => {
+  const { x, y, width, height } = props;
+  const minX = Math.min(x, x + width);
+  const minY = Math.min(y, y + height);
+  const maxX = Math.max(x, x + width);
+  const maxY = Math.max(y, y + height);
+  return {
+    minX,
+    minY,
+    maxX,
+    maxY,
+  };
+};
+
 const defaultProps: TBaseShapeProps<RectProps> = {
   drawable: true,
   type: "Rect",
   draw,
+  getBounds,
 };
 
 // @ts-ignore

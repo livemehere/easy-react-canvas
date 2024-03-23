@@ -51,10 +51,25 @@ const draw: TDraw<LineProps> = (ctx, props) => {
   ctx.restore();
 };
 
+const getBounds = (props: LineProps) => {
+  const { x1, y1, x2, y2 } = props;
+  const minX = Math.min(x1, x2);
+  const minY = Math.min(y1, y2);
+  const maxX = Math.max(x1, x2);
+  const maxY = Math.max(y1, y2);
+  return {
+    minX,
+    minY,
+    maxX,
+    maxY,
+  };
+};
+
 const defaultProps: TBaseShapeProps<LineProps> = {
   drawable: true,
   type: "Line",
   draw,
+  getBounds,
 };
 
 // @ts-ignore

@@ -48,10 +48,21 @@ const draw: TDraw<CircleProps> = (ctx, props) => {
   ctx.restore();
 };
 
+const getBounds = (props: CircleProps) => {
+  const { x, y, radius } = props;
+  return {
+    minX: x - radius,
+    minY: y - radius,
+    maxX: radius * 2,
+    maxY: radius * 2,
+  };
+};
+
 const defaultProps: TBaseShapeProps<CircleProps> = {
   drawable: true,
   type: "Circle",
   draw,
+  getBounds,
 };
 
 // @ts-ignore

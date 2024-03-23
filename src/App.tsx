@@ -17,7 +17,10 @@ function App() {
         }}
       >
         <button onClick={() => setDisplayBounds(!displayBounds)}>
-          Toggle Resize to Window {displayBounds ? "ON" : "OFF"}
+          Toggle Bounds {displayBounds ? "ON" : "OFF"}
+        </button>
+        <button onClick={() => setResizeToWindow((prev) => !prev)}>
+          Toggle resizeToWindow {resizeToWindow ? "ON" : "OFF"}
         </button>
         <button onClick={() => setX((prev) => prev + 10)}>Move Right</button>
       </div>
@@ -38,14 +41,18 @@ function App() {
             zIndex: -1,
           }}
         >
-          <Rect x={10} y={10} width={100} height={100} fill="red" />
-          <Circle x={100} y={100} radius={50} fill="blue" />
-          <Rect x={200} y={200} width={100} height={100} fill="green">
-            <Circle x={50} y={50} radius={50} fill="yellow" />
-            <Rect x={25} y={25} width={50} height={50} fill="purple" />
+          <Rect x={x} y={300} width={300} height={300} fill={"white"}>
+            <Circle x={80} y={100} radius={50} fill="red"></Circle>
+            <Circle x={300 - 80} y={100} radius={50} fill="blue"></Circle>
+            <Line
+              x1={80}
+              y1={250}
+              x2={300 - 80}
+              y2={250}
+              stroke="black"
+              strokeWidth={10}
+            ></Line>
           </Rect>
-          <Line x1={400} y1={400} x2={800} y2={800} stroke="white" />
-
           {/* Ignore not register component  */}
           <div>1</div>
         </Canvas>

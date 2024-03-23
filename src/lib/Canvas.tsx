@@ -9,7 +9,7 @@ import React, {
   useState,
 } from "react";
 import useResizeObserver from "./hooks/useResizeObserver";
-import { Bounds, getBounds } from "./utils/bounds";
+import { Bounds } from "./utils/bounds";
 import { TFinalShapeProps, TRootDraw, TBaseShapeProps } from "./types/shape";
 
 interface Props {
@@ -162,7 +162,9 @@ const Canvas: FC<Props & HTMLAttributes<HTMLCanvasElement>> = ({
     children.forEach((child) => {
       const { parent, displayBounds } = options;
 
-      const bounds = parent ? getBounds(parent) : options.rootBounds;
+      const bounds = parent
+        ? parent.props.getBounds(parent.props)
+        : options.rootBounds;
 
       // @ts-ignore
       const me = React.cloneElement<TFinalShapeProps<TBaseShapeProps>>(child, {
