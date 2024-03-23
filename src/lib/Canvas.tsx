@@ -42,7 +42,7 @@ const Canvas: FC<Props & HTMLAttributes<HTMLCanvasElement>> = ({
     setParentElement(canvas.parentElement);
 
     const loop = () => {
-      rafRef.current = requestAnimationFrame(loop);
+      // rafRef.current = requestAnimationFrame(loop);
       const { width, height } = sizeRef.current;
       rootDraw(ctx, {
         bounds: { minX: 0, minY: 0, maxX: width, maxY: height },
