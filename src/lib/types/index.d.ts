@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 
-export type DrawType = "Rect";
+export type DrawType = "Rect" | "Circle";
 
 export type TRootDraw = (
   ctx: CanvasRenderingContext2D,

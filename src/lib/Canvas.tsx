@@ -4,7 +4,6 @@ import React, {
   HTMLAttributes,
   ReactElement,
   ReactNode,
-  useEffect,
   useLayoutEffect,
   useRef,
   useState,
