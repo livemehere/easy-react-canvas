@@ -12,7 +12,7 @@ export interface CircleProps extends TBaseShapeProps<CircleProps> {
   children?: ReactNode;
 }
 
-const Circle: FC<CircleProps> = () => {
+const Circle: FC<Omit<CircleProps, keyof TBaseShapeProps>> = () => {
   return null;
 };
 
@@ -48,10 +48,13 @@ const draw: TDraw<CircleProps> = (ctx, props) => {
   ctx.restore();
 };
 
-Circle.defaultProps = {
+const defaultProps: TBaseShapeProps<CircleProps> = {
   drawable: true,
   type: "Circle",
   draw,
 };
+
+// @ts-ignore
+Circle.defaultProps = defaultProps;
 
 export default Circle;

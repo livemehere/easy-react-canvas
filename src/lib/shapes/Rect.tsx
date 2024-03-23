@@ -13,7 +13,7 @@ export interface RectProps extends TBaseShapeProps<RectProps> {
   children?: ReactNode;
 }
 
-const Rect: FC<RectProps> = () => {
+const Rect: FC<Omit<RectProps, keyof TBaseShapeProps>> = () => {
   return null;
 };
 
@@ -58,11 +58,13 @@ const draw: TDraw<RectProps> = (ctx, props) => {
   ctx.fill();
   ctx.restore();
 };
-
-Rect.defaultProps = {
+const defaultProps: TBaseShapeProps<RectProps> = {
   drawable: true,
   type: "Rect",
   draw,
 };
+
+// @ts-ignore
+Rect.defaultProps = defaultProps;
 
 export default Rect;

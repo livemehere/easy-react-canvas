@@ -1,7 +1,7 @@
 import { ReactElement } from "react";
 import { Bounds } from "../utils/bounds";
 
-export type TShape = "Rect" | "Circle";
+export type TShape = "Rect" | "Circle" | "Line";
 export type TBaseShapeProps<S = any> = {
   type: TShape;
   drawable: boolean;

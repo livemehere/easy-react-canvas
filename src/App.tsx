@@ -2,6 +2,7 @@ import Canvas from "./lib/Canvas";
 import { useState } from "react";
 import Rect from "./lib/shapes/Rect";
 import Circle from "./lib/shapes/Circle";
+import Line from "./lib/shapes/Line";
 
 function App() {
   const [resizeToWindow, setResizeToWindow] = useState(true);
@@ -43,6 +44,7 @@ function App() {
             <Circle x={50} y={50} radius={50} fill="yellow" />
             <Rect x={25} y={25} width={50} height={50} fill="purple" />
           </Rect>
+          <Line x1={400} y1={400} x2={800} y2={800} stroke="white" />
 
           {/* Ignore not register component  */}
           <div>1</div>
