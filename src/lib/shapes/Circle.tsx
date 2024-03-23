@@ -25,15 +25,15 @@ const draw: TDraw<CircleProps> = (ctx, props) => {
     );
   }
   /* Position origin to parent */
-  const relativeX = x + bounds.x;
-  const relativeY = y + bounds.y;
+  const relativeX = x + bounds.minX;
+  const relativeY = y + bounds.minY;
 
   if (displayBounds) {
     drawBounds(ctx, {
-      x: relativeX - radius,
-      y: relativeY - radius,
-      width: radius * 2,
-      height: radius * 2,
+      minX: relativeX - radius,
+      minY: relativeY - radius,
+      maxX: radius * 2,
+      maxY: radius * 2,
     });
   }
 

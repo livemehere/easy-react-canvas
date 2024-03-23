@@ -45,7 +45,7 @@ const Canvas: FC<Props & HTMLAttributes<HTMLCanvasElement>> = ({
       rafRef.current = requestAnimationFrame(loop);
       const { width, height } = sizeRef.current;
       rootDraw(ctx, {
-        bounds: { x: 0, y: 0, width, height },
+        bounds: { minX: 0, minY: 0, maxX: width, maxY: height },
         backgroundColor,
         components: toDrawAbleComponentArray(children),
       });
@@ -125,7 +125,7 @@ const Canvas: FC<Props & HTMLAttributes<HTMLCanvasElement>> = ({
     const ctx = canvas.getContext("2d")!;
     ctx.scale(dpr, dpr);
     rootDraw(ctx, {
-      bounds: { x: 0, y: 0, width: stageWidth, height: stageHeight },
+      bounds: { minX: 0, minY: 0, maxX: stageWidth, maxY: stageHeight },
       backgroundColor,
       components: toDrawAbleComponentArray(children),
     });
@@ -138,9 +138,9 @@ const Canvas: FC<Props & HTMLAttributes<HTMLCanvasElement>> = ({
     /* clear */
     if (backgroundColor) {
       ctx.fillStyle = backgroundColor;
-      ctx.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
+      ctx.fillRect(bounds.minX, bounds.minY, bounds.maxX, bounds.maxY);
     } else {
-      ctx.clearRect(bounds.x, bounds.y, bounds.width, bounds.height);
+      ctx.clearRect(bounds.minX, bounds.minY, bounds.maxX, bounds.maxY);
     }
     /** (DRAW_SPEC) 👇 If Draw spec changed, append options */
     traverseShape(ctx, components, {

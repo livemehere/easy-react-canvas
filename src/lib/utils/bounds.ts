@@ -3,10 +3,10 @@ import { ReactElement } from "react";
 import { TBaseShapeProps } from "../types/shape";
 
 export type Bounds = {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
+  minX: number;
+  minY: number;
+  maxX: number;
+  maxY: number;
 };
 
 /* FIXME: type */
@@ -14,10 +14,10 @@ export function getBounds(component: ReactElement<TBaseShapeProps>): Bounds {
   if (isCircle(component)) {
     const { x, y, radius } = component.props;
     return {
-      x: x - radius,
-      y: y - radius,
-      width: radius * 2,
-      height: radius * 2,
+      minX: x - radius,
+      minY: y - radius,
+      maxX: radius * 2,
+      maxY: radius * 2,
     };
   }
 
@@ -28,10 +28,10 @@ export function getBounds(component: ReactElement<TBaseShapeProps>): Bounds {
     const maxX = Math.max(x, x + width);
     const maxY = Math.max(y, y + height);
     return {
-      x: minX,
-      y: minY,
-      width: maxX - minX,
-      height: maxY - minY,
+      minX,
+      minY,
+      maxX,
+      maxY,
     };
   }
 
@@ -42,10 +42,10 @@ export function getBounds(component: ReactElement<TBaseShapeProps>): Bounds {
     const maxX = Math.max(x1, x2);
     const maxY = Math.max(y1, y2);
     return {
-      x: minX,
-      y: minY,
-      width: maxX - minX,
-      height: maxY - minY,
+      minX,
+      minY,
+      maxX,
+      maxY,
     };
   }
 
@@ -57,7 +57,7 @@ export function drawBounds(ctx: CanvasRenderingContext2D, bounds: Bounds) {
   ctx.beginPath();
   ctx.strokeStyle = "red";
   ctx.lineWidth = 1;
-  ctx.rect(bounds.x, bounds.y, bounds.width, bounds.height);
+  ctx.rect(bounds.minX, bounds.minY, bounds.maxX, bounds.maxY);
   ctx.stroke();
   ctx.restore();
 }

@@ -36,15 +36,15 @@ const draw: TDraw<RectProps> = (ctx, props) => {
     );
   }
   /* Position origin to parent */
-  const relativeX = x + bounds.x;
-  const relativeY = y + bounds.y;
+  const relativeX = x + bounds.minX;
+  const relativeY = y + bounds.minY;
 
   if (displayBounds) {
     drawBounds(ctx, {
-      x: relativeX,
-      y: relativeY,
-      width,
-      height,
+      minX: relativeX,
+      minY: relativeY,
+      maxX: width,
+      maxY: height,
     });
   }
 

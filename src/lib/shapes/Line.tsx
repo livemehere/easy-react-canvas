@@ -26,17 +26,17 @@ const draw: TDraw<LineProps> = (ctx, props) => {
     );
   }
   /* Position origin to parent */
-  const relativeX1 = x1 + bounds.x;
-  const relativeY1 = y1 + bounds.y;
-  const relativeX2 = x2 + bounds.x;
-  const relativeY2 = y2 + bounds.y;
+  const relativeX1 = x1 + bounds.minX;
+  const relativeY1 = y1 + bounds.minY;
+  const relativeX2 = x2 + bounds.minX;
+  const relativeY2 = y2 + bounds.minY;
 
   if (displayBounds) {
     drawBounds(ctx, {
-      x: relativeX1,
-      y: relativeY1,
-      width: Math.abs(relativeX2 - relativeX1),
-      height: Math.abs(relativeY2 - relativeY1),
+      minX: relativeX1,
+      minY: relativeY1,
+      maxX: Math.abs(relativeX2 - relativeX1),
+      maxY: Math.abs(relativeY2 - relativeY1),
     });
   }
 
