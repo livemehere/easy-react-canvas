@@ -6,7 +6,7 @@
   "author": "livemehere",
   "homepage": "https://github.com/livemehere/easy-react-canvas/tree/master",
   "repository": "https://github.com/livemehere/easy-react-canvas/tree/master",
-  "description": "Solution for web tutorial or help menu.",
+  "description": "A declarative way to use canvas in react",
   "license": "MIT",
   "keywords": [
     "react",
